@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 export default function LoginPage() {
 const register = (values: { email: string; password: string }) => {
   console.log(values);
-  router.push("/dashboard");
+  router.push("/cashier");
 };
   const router = useRouter();
 
