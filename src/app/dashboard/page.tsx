@@ -155,7 +155,7 @@ function StatCard({
 export default function DashboardPage() {
   const [range, setRange] = useState("1Y");
   const [productTab, setProductTab] = useState<"casual" | "traditional">(
-    "casual"
+    "casual",
   );
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -319,9 +319,7 @@ export default function DashboardPage() {
                   </div>
                   <div className="rounded-xl bg-amber-50 p-3">
                     <ShoppingCart className="mx-auto h-5 w-5 text-amber-600" />
-                    <p className="mt-2 text-sm font-semibold text-black">
-                      487
-                    </p>
+                    <p className="mt-2 text-sm font-semibold text-black">487</p>
                     <p className="text-xs text-black/50">Orders</p>
                   </div>
                 </div>
@@ -427,7 +425,7 @@ export default function DashboardPage() {
                           background: "#D97706",
                           color: "#FFFBEB",
                         }}
-                        formatter={(v: number) => [`${v}%`, "Selling Rate"]}
+                        formatter={(v) => [`${v}%`, "Selling Rate"]}
                       />
                       <Line
                         type="monotone"
