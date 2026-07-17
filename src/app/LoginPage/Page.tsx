@@ -3,11 +3,14 @@
 import Image from "next/image";
 import wolfImage from "./images/wolf.jpeg";
 import { Field, Form, Formik } from "formik";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const register = (values: { email: string; password: string }) => {
-    console.log(values);
-  };
+const register = (values: { email: string; password: string }) => {
+  console.log(values);
+  router.push("/dashboard");
+};
+  const router = useRouter();
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-amber-50 rounded-2xl sm:px-6 lg:px-8">
