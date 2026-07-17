@@ -9,6 +9,7 @@ import BillingHistory from "@/components/BillingHistory";
 import Sidebar from "@/components/Sidebar";
 import ClothingCart, { type CartItem } from "@/components/ClothingCart";
 import Header from "@/components/Header";
+import { LuScanBarcode, LuCheck } from "react-icons/lu";
 
 type Payment = {
   orderNumber: number;
