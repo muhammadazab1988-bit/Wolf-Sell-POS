@@ -1,8 +1,8 @@
 "use client";
-
+ 
 import { useState } from "react";
-
-
+import { useAuthGuard } from "@/lib/useAuthGuard";
+ 
 import CategoryFilter from "@/components/CategoryFilter";
 import CardFilter from "@/components/CardFilter";
 import BillingHistory from "@/components/BillingHistory";
@@ -10,17 +10,17 @@ import Sidebar from "@/components/Sidebar";
 import ClothingCart, { type CartItem } from "@/components/ClothingCart";
 import Header from "@/components/Header";
 import { LuScanBarcode, LuCheck, LuPrinter, LuDownload } from "react-icons/lu";
-
+ 
 type Payment = {
   orderNumber: number;
   totalAmount: number;
 };
-
+ 
 function PaymentSuccessModal({ payment, onClose }: { payment: Payment | null; onClose: () => void }) {
   if (!payment) return null;
-
+ 
   const total = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(payment.totalAmount);
-
+ 
   const downloadReceipt = () => {
     const receipt = `CLOTHING POS\n\nPayment successful\nOrder: #${payment.orderNumber}\nTotal: ${total}\n\nThank you for shopping with us.`;
     const blob = new Blob([receipt], { type: "text/plain" });
@@ -31,7 +31,7 @@ function PaymentSuccessModal({ payment, onClose }: { payment: Payment | null; on
     link.click();
     URL.revokeObjectURL(url);
   };
-
+ 
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/65 p-4 backdrop-blur-sm" role="presentation" onMouseDown={(event) => event.currentTarget === event.target && onClose()}>
       <section className="w-full max-w-[460px] rounded-[28px] bg-amber-50 px-6 py-8 text-black shadow-2xl sm:px-10 sm:py-9" role="dialog" aria-modal="true" aria-labelledby="payment-success-title">
@@ -43,14 +43,20 @@ function PaymentSuccessModal({ payment, onClose }: { payment: Payment | null; on
     </div>
   );
 }
-
+ 
 export default function Page() {
+  // بيتأكد إن فيه مستخدم مسجل دخول قبل ما يعرض الصفحة
+  const ready = useAuthGuard();
+ 
   const [payment, setPayment] = useState<Payment | null>(null);
-
+ 
   const handleCheckout = (_items: CartItem[], totalAmount: number) => {
     setPayment({ orderNumber: Math.floor(1000 + Math.random() * 9000), totalAmount });
   };
-
+ 
+  // لسه بنتأكد؟ متعرضش حاجة لحد دلوقتي
+  if (!ready) return null;
+ 
   return (
     <main className="flex font-kameron">
       <Sidebar />

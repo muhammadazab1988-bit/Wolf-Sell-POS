@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useAuthGuard } from "@/lib/useAuthGuard";
 import {
   Wallet,
   ShoppingBag,
@@ -153,11 +154,13 @@ function StatCard({
 /* ------------------------------------------------------------------ */
 
 export default function DashboardPage() {
+  const ready = useAuthGuard();
   const [range, setRange] = useState("1Y");
   const [productTab, setProductTab] = useState<"casual" | "traditional">(
     "casual",
   );
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  if (!ready) return null;
 
   return (
     <div className="flex min-h-screen bg-amber-50">

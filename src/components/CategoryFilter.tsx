@@ -5,16 +5,12 @@ import { LuUser, LuFootprints } from "react-icons/lu";
 
 const categories = [
   { id: "all", label: "All Products", icon: null },
-  { id: "men", label: "Men", icon: LuUser },
-  { id: "footwear", label: "Footwear", icon: LuFootprints },
-  { id: "all", label: "All Products", icon: null },
-  { id: "men", label: "Men", icon: LuUser },
   { id: "footwear", label: "Footwear", icon: LuFootprints },
   { id: "accessories", label: "Accessories", icon: null },
 ];
 
 export default function CategoryFilter() {
-  const [active, setActive] = useState("men");
+  const [active, setActive] = useState("all");
 
   return (
     <div className="flex flex-wrap items-center gap-2 font-kameron sm:gap-3">

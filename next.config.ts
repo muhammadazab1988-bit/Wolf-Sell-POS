@@ -9,6 +9,12 @@ const nextConfig = {
         protocol: "https",
         hostname: "img.daisyui.com",
       },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "1337",
+        pathname: "/uploads/**",
+      },
     ],
   },
 };

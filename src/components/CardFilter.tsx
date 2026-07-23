@@ -1,14 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
+import { getProducts } from "@/lib/strapi";
 
-const categories = ["Shirts", "Trousers", "Sweatshirts", "Foot Wears"];
+// "All Products" بيمثل بعرض كل حاجة من غير فلترة
+const categories = ["T-Shirts", "Trousers","Foot Wears"];
+
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
 
 export default function CardFilter() {
-  const products = [1, 2, 3,4,5,6];
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState("All Products");
 
-  const [selectedCategory, setSelectedCategory] = useState("");
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const data = await getProducts();
+        setProducts(data);
+      } catch (err) {
+        console.log("حصل خطأ في جلب المنتجات:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadProducts();
+  }, []);
+
+  // لو "All Products" مختارة، اعرض كل حاجة من غير فلترة
+  const filteredProducts =
+    selectedCategory === "All Products"
+      ? products
+      : products.filter((p) => p.category?.name === selectedCategory);
 
   return (
     <div className="container h-auto overflow-hidden rounded-2xl border border-amber-200 bg-amber-50 p-3 sm:p-4">
@@ -29,10 +53,30 @@ export default function CardFilter() {
             </button>
           ))}
         </div>
+
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
-          {products.map((el) => (
-            <ProductCard key={el} />
-          ))}
+          {loading && <p>جاري تحميل المنتجات...</p>}
+
+          {!loading && filteredProducts.length === 0 && (
+            <p>لا توجد منتجات</p>
+          )}
+
+          {!loading &&
+            filteredProducts.map((product) => {
+              const imageUrl = product.coverImage?.url
+                ? `${STRAPI_URL}${product.coverImage.url}`
+                : "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp";
+
+              return (
+                <ProductCard
+                  key={product.id}
+                  name={product.name}
+                  price={product.price}
+                  imageUrl={imageUrl}
+                  onBuy={() => console.log("تم اختيار:", product.name)}
+                />
+              );
+            })}
         </div>
       </div>
     </div>
